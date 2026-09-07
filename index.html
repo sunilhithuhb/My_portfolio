@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiran — Software Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #10151c;
+    --panel: #161d26;
+    --panel-2: #1d2632;
+    --border: #2a3542;
+    --text: #e6e9ee;
+    --text-dim: #8b96a6;
+    --accent: #6fc7b8;
+    --accent-warm: #d9a75e;
+    --radius: 4px;
+    --maxw: 1080px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Instrument Sans', sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  code, .mono { font-family: 'IBM Plex Mono', monospace; }
+
+  a { color: inherit; }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- nav ---------- */
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(16, 21, 28, 0.88);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav.wrap {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .wordmark {
+    font-weight: 600; font-size: 1.05rem; text-decoration: none;
+    display: flex; align-items: baseline; gap: 6px;
+  }
+  .wordmark .dot { color: var(--accent); font-family: 'IBM Plex Mono', monospace; }
+  .navlinks { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; }
+  .navlinks a { text-decoration: none; color: var(--text-dim); font-size: 0.95rem; transition: color .15s; }
+  .navlinks a:hover, .navlinks a:focus-visible { color: var(--text); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    padding: 96px 0 72px;
+    display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 4vw, 2.85rem);
+    line-height: 1.15;
+    margin: 0 0 20px;
+    font-weight: 700;
+    max-width: 15ch;
+  }
+  .hero p.lede {
+    color: var(--text-dim);
+    font-size: 1.08rem;
+    max-width: 46ch;
+    margin: 0 0 32px;
+  }
+  .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 11px 20px; border-radius: var(--radius);
+    text-decoration: none; font-size: 0.95rem; font-weight: 500;
+    border: 1px solid var(--border); transition: border-color .15s, background .15s;
+  }
+  .btn.primary { background: var(--accent); color: #0c1512; border-color: var(--accent); }
+  .btn.primary:hover { background: #7fd3c5; }
+  .btn.ghost { color: var(--text); }
+  .btn.ghost:hover { border-color: var(--text-dim); }
+
+  .status-panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    box-shadow: 0 0 0 1px rgba(111,199,184,0.04);
+    opacity: 0;
+    transform: translateY(6px);
+    animation: rise .6s ease-out .15s forwards;
+  }
+  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+  .status-panel .head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px; color: var(--text-dim); font-size: 0.78rem;
+  }
+  .status-panel .head .pulse {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+    display: inline-block; margin-right: 6px;
+    box-shadow: 0 0 0 0 rgba(111,199,184,0.6);
+    animation: ping 2s infinite;
+  }
+  @keyframes ping {
+    0% { box-shadow: 0 0 0 0 rgba(111,199,184,0.5); }
+    70% { box-shadow: 0 0 0 6px rgba(111,199,184,0); }
+    100% { box-shadow: 0 0 0 0 rgba(111,199,184,0); }
+  }
+  .status-panel pre { margin: 0; color: var(--text); white-space: pre-wrap; }
+  .status-panel .key { color: var(--accent-warm); }
+  .status-panel .str { color: var(--accent); }
+
+  /* ---------- section shell ---------- */
+  section { padding: 64px 0; border-top: 1px solid var(--border); }
+  .section-head { margin-bottom: 40px; max-width: 60ch; }
+  .section-head .kicker {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: var(--accent);
+    margin: 0 0 8px;
+  }
+  .section-head h2 { font-size: 1.6rem; margin: 0 0 10px; font-weight: 600; }
+  .section-head p { color: var(--text-dim); margin: 0; }
+
+  /* ---------- about / flow diagram ---------- */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .about-grid p { color: var(--text-dim); margin: 0 0 14px; }
+  .flow { width: 100%; height: auto; }
+  .flow text { font-family: 'IBM Plex Mono', monospace; font-size: 11px; fill: var(--text-dim); }
+  .flow .node-label { fill: var(--text); font-size: 12px; }
+  .flow rect { fill: var(--panel-2); stroke: var(--border); }
+  .flow line, .flow path { stroke: var(--border); }
+  .flow .accent-line { stroke: var(--accent); }
+
+  /* ---------- skills as layered bands ---------- */
+  .stack-layers { display: flex; flex-direction: column; gap: 2px; }
+  .layer {
+    display: grid; grid-template-columns: 200px 1fr; gap: 24px;
+    padding: 18px 20px;
+    border-left: 3px solid var(--border);
+    background: var(--panel);
+  }
+  .layer:hover { border-left-color: var(--accent); }
+  .layer .layer-name {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: var(--text-dim);
+    align-self: start; padding-top: 3px;
+  }
+  .layer .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    font-size: 0.85rem; padding: 5px 11px; border-radius: 999px;
+    border: 1px solid var(--border); color: var(--text);
+  }
+
+  /* ---------- projects ---------- */
+  .project {
+    display: grid; grid-template-columns: 240px 1fr; gap: 32px;
+    padding: 32px 0; border-bottom: 1px solid var(--border);
+  }
+  .project:last-child { border-bottom: none; }
+  .project .p-meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: var(--text-dim); }
+  .project .p-meta .id { color: var(--accent-warm); display: block; margin-bottom: 8px; }
+  .project h3 { margin: 0 0 8px; font-size: 1.2rem; }
+  .project h3 a { text-decoration: none; border-bottom: 1px solid var(--border); transition: border-color .15s; }
+  .project h3 a:hover { border-color: var(--accent); }
+
+  .repo-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 0; border-bottom: 1px solid var(--border);
+    gap: 16px; flex-wrap: wrap;
+  }
+  .repo-row:last-child { border-bottom: none; }
+  .repo-row a { text-decoration: none; font-weight: 500; border-bottom: 1px solid var(--border); }
+  .repo-row a:hover { border-color: var(--accent); }
+  .repo-row span.tag { flex-shrink: 0; }
+  .project p.desc { color: var(--text-dim); margin: 0 0 14px; max-width: 62ch; }
+  .project .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .project ul { margin: 0; padding-left: 18px; color: var(--text-dim); }
+  .project li { margin-bottom: 4px; }
+
+  /* ---------- experience log ---------- */
+  .log-line {
+    display: grid; grid-template-columns: 140px 1fr; gap: 20px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem;
+    padding: 14px 0; border-bottom: 1px dashed var(--border);
+  }
+  .log-line:last-child { border-bottom: none; }
+  .log-line .ts { color: var(--accent); }
+  .log-line .msg { color: var(--text); font-family: 'Instrument Sans', sans-serif; font-size: 0.98rem; }
+
+  /* ---------- contact ---------- */
+  .endpoint {
+    background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 28px 30px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center;
+  }
+  .endpoint .path { font-family: 'IBM Plex Mono', monospace; font-size: 0.95rem; margin-bottom: 6px; }
+  .endpoint .path .method { color: var(--accent); margin-right: 8px; }
+  .endpoint p { color: var(--text-dim); margin: 0; max-width: 50ch; }
+  .contact-links { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  footer { padding: 32px 0 48px; color: var(--text-dim); font-size: 0.85rem; }
+
+  @media (max-width: 760px) {
+    .hero { grid-template-columns: 1fr; padding-top: 56px; }
+    .about-grid { grid-template-columns: 1fr; }
+    .layer { grid-template-columns: 1fr; gap: 10px; }
+    .project { grid-template-columns: 1fr; }
+    .endpoint { grid-template-columns: 1fr; }
+    .navlinks { gap: 16px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .status-panel, .status-panel .head .pulse { animation: none; opacity: 1; transform: none; }
+  }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <a href="#top" class="wordmark">Sunil Kiran Nayak<span class="dot mono">.dev</span></a>
+    <ul class="navlinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="https://github.com/sunilhithuhb?tab=repositories" target="_blank" rel="noopener">Projects</a></li>
+      <li><a href="https://github.com/sunilhithuhb" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero wrap" id="top" style="border-top: none;">
+    <div>
+      <h1>I build backend systems that keep running when no one's watching.</h1>
+      <p class="lede">Software engineer working on APIs, databases, and the pipelines that ship and monitor them. I like the parts of the stack most people never see.</p>
+      <div class="cta-row">
+        <a href="#projects" class="btn primary">View projects</a>
+        <a href="#contact" class="btn ghost">Get in touch</a>
+      </div>
+    </div>
+    <div class="status-panel" aria-label="Profile summary">
+      <div class="head"><span><span class="pulse"></span>GET /status</span><span>200 OK</span></div>
+      <pre><span class="key">"engineer"</span>: <span class="str">"Sunil Kiran Nayak"</span>,
+<span class="key">"role"</span>: <span class="str">"Software Engineer"</span>,
+<span class="key">"since"</span>: 2024,
+<span class="key">"focus"</span>: [
+  <span class="str">"API design"</span>,
+  <span class="str">"database ops"</span>,
+  <span class="str">"CI/CD"</span>,
+  <span class="str">"learning &amp; building with LLMs"</span>
+],
+<span class="key">"status"</span>: <span class="str">"open to opportunities"</span></pre>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">01 · about</p>
+        <h2>Where I sit in the stack</h2>
+      </div>
+      <div class="about-grid">
+        <div>
+          <p>I'm a fresher, but with strong, practical hands-on experience — I've designed and versioned APIs, worked with databases, and built the deployment and alerting pipelines that keep a service running.</p>
+          <p>I have a strong practical interest in learning and building AI platforms — combining that backend foundation with LLMs to build things like retrieval and semantic search.</p>
+        </div>
+        <svg class="flow" viewBox="0 0 380 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram of a request flowing from client through API, service layer, and database, with CI/CD and monitoring wrapped around the system">
+          <rect x="10" y="20" width="90" height="40" rx="4"></rect>
+          <text x="55" y="44" text-anchor="middle" class="node-label">Client</text>
+
+          <rect x="145" y="20" width="90" height="40" rx="4"></rect>
+          <text x="190" y="44" text-anchor="middle" class="node-label">API layer</text>
+
+          <rect x="280" y="20" width="90" height="40" rx="4"></rect>
+          <text x="325" y="44" text-anchor="middle" class="node-label">Services</text>
+
+          <line x1="100" y1="40" x2="145" y2="40" class="accent-line" stroke-width="1.5"></line>
+          <line x1="235" y1="40" x2="280" y2="40" class="accent-line" stroke-width="1.5"></line>
+
+          <line x1="325" y1="60" x2="325" y2="120" stroke-width="1.5"></line>
+          <rect x="280" y="120" width="90" height="40" rx="4"></rect>
+          <text x="325" y="144" text-anchor="middle" class="node-label">Database</text>
+
+          <rect x="10" y="100" width="225" height="60" rx="4" fill="none"></rect>
+          <text x="122" y="122" text-anchor="middle">Deployment · GitHub Actions · Docker</text>
+          <text x="122" y="142" text-anchor="middle">error logging · alerting</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">02 · skills</p>
+        <h2>The stack, by layer</h2>
+        <p>Grouped the way they actually sit on top of each other in a running system.</p>
+      </div>
+      <div class="stack-layers">
+        <div class="layer">
+          <div class="layer-name">API &amp; web</div>
+          <div class="tags"><span class="tag">FastAPI</span><span class="tag">Django</span><span class="tag">Django REST Framework</span></div>
+        </div>
+        <div class="layer">
+          <div class="layer-name">Data stores</div>
+          <div class="tags"><span class="tag">MySQL</span><span class="tag">SQLite</span></div>
+        </div>
+        <div class="layer">
+          <div class="layer-name">Infra &amp; delivery</div>
+          <div class="tags"><span class="tag">Docker</span><span class="tag">GitHub Actions</span></div>
+        </div>
+        <div class="layer">
+          <div class="layer-name">AI &amp; LLMs</div>
+          <div class="tags"><span class="tag">LangChain</span><span class="tag">LLM-backed apps</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">03 · projects</p>
+        <h2>Things I've built</h2>
+      </div>
+
+      <div class="project">
+        <div class="p-meta"><span class="id">service/01</span>HRMS</div>
+        <div>
+          <h3><a href="https://github.com/sunilhithuhb/hrms" target="_blank" rel="noopener">HR Management System</a></h3>
+          <p class="desc">A full HRMS covering  attendance, leave management, and role-based access control — built end to end rather than bolted onto an existing system.</p>
+          <div class="tags"><span class="tag">Django</span><span class="tag">DRF</span><span class="tag">MySQL</span></div>
+          <ul>
+            <li> attendance, and leave management modules</li>
+            <li>Role-based access control (RBAC) across modules</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="p-meta"><span class="id">service/02</span>Document Intelligence</div>
+        <div>
+          <h3><a href="https://github.com/sunilhithuhb/ai_document" target="_blank" rel="noopener">Document Intelligence API</a></h3>
+          <p class="desc">A FastAPI service for semantic search and Q&amp;A over documents, built while learning to work with LLMs.</p>
+          <div class="tags"><span class="tag">FastAPI</span><span class="tag">LangChain</span><span class="tag">SQLite</span></div>
+          <ul>
+            <li>Semantic search and question-answering over uploaded documents</li>
+            <li>Retrieval and generation pipeline orchestrated with LangChain</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="other-builds">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">04 · other repos</p>
+        <h2>Smaller builds &amp; practice</h2>
+        <p>Rounding out the GitHub — mini-projects and problem-solving work.</p>
+      </div>
+      <div>
+        <div class="repo-row">
+          <a href="https://github.com/sunilhithuhb/Employe-management" target="_blank" rel="noopener">Employe-management</a>
+          <span class="tag">Python</span>
+        </div>
+        <div class="repo-row">
+          <a href="https://github.com/sunilhithuhb/cafe_mini_project" target="_blank" rel="noopener">cafe_mini_project</a>
+          <span class="tag">Python</span>
+        </div>
+        <div class="repo-row">
+          <a href="https://github.com/sunilhithuhb/coding-solutions" target="_blank" rel="noopener">coding-solutions</a>
+          <span class="tag">Python</span>
+        </div>
+        <div class="repo-row">
+          <a href="https://github.com/sunilhithuhb/password-page" target="_blank" rel="noopener">password-page</a>
+          <span class="tag">HTML</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">05 · experience</p>
+        <h2>A short log</h2>
+      </div>
+      <div>
+        <div class="log-line">
+          <span class="ts">2024 → now</span>
+          <span class="msg">Software Engineer — backend systems: API design and versioning, database optimization, and error-logging/alerting.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">06 · contact</p>
+        <h2>Say hello</h2>
+      </div>
+      <div class="endpoint">
+        <div>
+          <div class="path"><span class="method">POST</span>/contact</div>
+          <p>Find my code on GitHub and my practice solutions on HackerRank. Swap in your real email before publishing.</p>
+        </div>
+        <div class="contact-links">
+          <a class="btn primary" href="sunilkirannayak@gmail.com">Email me</a>
+          <a class="btn ghost" href="tel:+917894140775">+91 78941 40775</a>
+          <a class="btn ghost" href="https://github.com/sunilhithuhb" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn ghost" href="https://www.hackerrank.com/profile/sunilkirannayak" target="_blank" rel="noopener">HackerRank</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p>Built by Sunil Kiran Nayak.</p>
+</footer>
+
+</body>
+</html>
